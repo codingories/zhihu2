@@ -51,15 +51,13 @@ const inputRef = reactive({
 })
 
 const updateValue = (e: KeyboardEvent) => {
-  console.log('ee', e.target)
-  console.log('e.target.nodeValue', (e.target as HTMLInputElement).value)
   const targetValue = (e.target as HTMLInputElement).value as string
   inputRef.val = targetValue
   emit('update:modelValue', targetValue)
 }
 
 onMounted(() => {
-  emitter.emit('form-item-created', inputRef.val)
+  emitter.emit('form-item-created', validateInput)
 })
 
 const validateInput = () => {

@@ -16,8 +16,8 @@
           ></validate-input>
         </div>
       <div class="mb-3">
-        <label class="form-label">邮箱地址</label>
-        <validate-input :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱地址" type="text"
+        <label class="form-label">密码</label>
+        <validate-input :rules="passwordRules" v-model="passwordVal" placeholder="请输入密码" type="password"
                         ref="inputRef"
         ></validate-input>
       </div>
@@ -71,23 +71,23 @@ const testData: ColumnProps[] = [
   }
 ]
 
-const emailReg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+// const emailReg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+//
+// const emailRef = reactive({
+//   val: '',
+//   error: false,
+//   message: ''
+// })
 
-const emailRef = reactive({
-  val: '',
-  error: false,
-  message: ''
-})
-
-const validateEmail = () => {
-  if (emailRef.val.trim() === '') {
-    emailRef.error = true
-    emailRef.message = 'can not be empty'
-  } else if (!emailReg.test(emailRef.val)) {
-    emailRef.error = true
-    emailRef.message = 'should be valid email'
-  }
-}
+// const validateEmail = () => {
+//   if (emailRef.val.trim() === '') {
+//     emailRef.error = true
+//     emailRef.message = 'can not be empty'
+//   } else if (!emailReg.test(emailRef.val)) {
+//     emailRef.error = true
+//     emailRef.message = 'should be valid email'
+//   }
+// }
 
 const emailRules: RulesProp = [
   {
@@ -100,11 +100,18 @@ const emailRules: RulesProp = [
   }
 ]
 
-const emailVal = ref('test@123.com')
+const passwordRules = [
+  {
+    type: 'required',
+    message: '密码不能为空'
+  }
+]
+
+const emailVal = ref('')
+const passwordVal = ref('')
 
 const onFormSubmit = (result: boolean) => {
-  // console.log(inputRef.value.validateInput())
-  console.log('1234', result)
+  console.log(result)
 }
 
 </script>
