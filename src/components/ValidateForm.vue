@@ -9,48 +9,66 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onUnmounted } from 'vue'
-import mitt from 'mitt'
+<!--<script lang="ts">-->
+<!--import { defineComponent, onUnmounted } from 'vue'-->
+<!--import mitt from 'mitt'-->
 
-export const emitter = mitt()
+<!--export const emitter = mitt()-->
 
-type ValidateFunc = () => boolean;
+<!--type ValidateFunc = () => boolean;-->
 
-export default defineComponent({
-  name: 'ValidateForm',
-  emits: ['form-submit'],
-  setup (props, context) {
-    let funcArr: ValidateFunc[] = []
-    const submitForm = () => {
-      const result = funcArr.map(func => func()).every(result => result)
-      context.emit('form-submit', result)
-    }
-    const callback = (func?: ValidateFunc) => {
-      if (func) {
-        funcArr.push(func)
-      }
-    }
-    emitter.on('form-item-created', callback)
-    onUnmounted(() => {
-      emitter.off('form-item-created', callback)
-      funcArr = []
-    })
-    return {
-      submitForm
-    }
-  }
-})
-</script>
-<!--<script lang="ts" setup>-->
-<!--import { defineEmits } from 'vue'-->
-
-<!--const emit = defineEmits(['form-submit'])-->
-<!--const submitForm = () => {-->
-<!--  emit('form-submit', true)-->
-<!--}-->
-
+<!--export default defineComponent({-->
+<!--  name: 'ValidateForm',-->
+<!--  emits: ['form-submit'],-->
+<!--  setup (props, context) {-->
+<!--    let funcArr: ValidateFunc[] = []-->
+<!--    const submitForm = () => {-->
+<!--      const result = funcArr.map(func => func()).every(result => result)-->
+<!--      context.emit('form-submit', result)-->
+<!--    }-->
+<!--    const callback = (func?: ValidateFunc) => {-->
+<!--      if (func) {-->
+<!--        funcArr.push(func)-->
+<!--      }-->
+<!--    }-->
+<!--    emitter.on('form-item-created', callback)-->
+<!--    onUnmounted(() => {-->
+<!--      emitter.off('form-item-created', callback)-->
+<!--      funcArr = []-->
+<!--    })-->
+<!--    return {-->
+<!--      submitForm-->
+<!--    }-->
+<!--  }-->
+<!--})-->
 <!--</script>-->
+
+<script lang="ts" setup>
+import { defineEmits, onUnmounted } from 'vue'
+import { emitter } from '@/stores/store'
+
+type ValidateFunc = () => boolean
+
+const emit = defineEmits(['form-submit'])
+let funcArr: ValidateFunc[] = []
+
+const callback = (func?: ValidateFunc) => {
+  if (func) {
+    funcArr.push(func)
+  }
+}
+
+emitter.on('form-item-created', callback)
+onUnmounted(() => {
+  emitter.off('form-item-created', callback)
+  funcArr = []
+})
+
+const submitForm = () => {
+  const result = funcArr.map(func => func()).every(result => result)
+  emit('form-submit', result)
+}
+</script>
 
 <style>
 

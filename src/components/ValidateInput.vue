@@ -1,12 +1,5 @@
 <template>
   <div class="validate-input-container pb-3">
-
-    <!--    v-model="emailRef.val"-->
-    <!--    @blur="validateEmail"-->
-    <!--    is-valid"-->
-    <!--    {{ inputRef }}-->
-    <!--    {{ inputRef.error }}-->
-
     <input
       class="form-control"
       :class="{'is-invalid': inputRef.error}"
@@ -15,18 +8,13 @@
       @input="updateValue"
       v-bind="$attrs"
     >
-    <!--    <span v-if="inputRef.error" class="invalid-feedback">-->
-    <!--&lt;!&ndash;      {{ inputRef.message }}&ndash;&gt;-->
-    <!--      12334-->
-    <!--    </span>-->
     <span v-if="inputRef.error" class="invalid-feedback">{{ inputRef.message }}</span>
-
   </div>
 </template>
 
 <script lang="ts" setup>
 import { defineEmits, defineProps, PropType, reactive, defineExpose, onMounted } from 'vue'
-import { emitter } from './ValidateForm.vue'
+import { emitter } from '@/stores/store'
 
 const emailReg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
 
@@ -35,7 +23,7 @@ interface RuleProp {
   message: string;
 }
 
-export type RulesProp = RuleProp[]
+type RulesProp = RuleProp[]
 
 const props = defineProps({
   rules: Array as PropType<RulesProp>,
