@@ -11,8 +11,16 @@
     <validate-form @form-submit="onFormSubmit">
         <div class="mb-3">
           <label class="form-label">邮箱地址</label>
-          <validate-input :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱地址" type="text"></validate-input>
+          <validate-input :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱地址" type="text"
+                          ref="inputRef"
+          ></validate-input>
         </div>
+      <div class="mb-3">
+        <label class="form-label">邮箱地址</label>
+        <validate-input :rules="emailRules" v-model="emailVal" placeholder="请输入邮箱地址" type="text"
+                        ref="inputRef"
+        ></validate-input>
+      </div>
       <template #submit>
         <span class="btn btn-danger">Submit</span>
       </template>
@@ -27,6 +35,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
 import ValidateForm from '@/components/ValidateForm.vue'
+
+const inputRef = ref<never>()
 
 const currentUser: UserProps = {
   isLogin: true,
@@ -90,9 +100,10 @@ const emailRules: RulesProp = [
   }
 ]
 
-const emailVal = ref('')
+const emailVal = ref('test@123.com')
 
 const onFormSubmit = (result: boolean) => {
+  // console.log(inputRef.value.validateInput())
   console.log('1234', result)
 }
 

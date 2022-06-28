@@ -25,7 +25,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, defineProps, PropType, reactive } from 'vue'
+import { defineEmits, defineProps, PropType, reactive, defineExpose, onMounted } from 'vue'
+import { emitter } from './ValidateForm.vue'
 
 const emailReg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
 
@@ -57,6 +58,10 @@ const updateValue = (e: KeyboardEvent) => {
   emit('update:modelValue', targetValue)
 }
 
+onMounted(() => {
+  emitter.emit('form-item-created', inputRef.val)
+})
+
 const validateInput = () => {
   if (props.rules) {
     const allPassed = props.rules.every(rule => {
@@ -64,7 +69,6 @@ const validateInput = () => {
       inputRef.message = rule.message
       switch (rule.type) {
         case 'required':
-          console.log('inputRef.val', inputRef.val)
           passed = (inputRef.val.trim() !== '')
           break
         case 'email':
@@ -76,8 +80,14 @@ const validateInput = () => {
       return passed
     })
     inputRef.error = !allPassed
+    return allPassed
   }
+  return true
 }
+
+defineExpose({
+  validateInput
+})
 
 </script>
 <script lang="ts">
