@@ -15,15 +15,9 @@
 <script lang="ts" setup>
 import { defineEmits, defineProps, PropType, reactive, defineExpose, onMounted } from 'vue'
 import { emitter } from '@/stores/store'
+import { RulesProp } from '@/types/commonTypes'
 
 const emailReg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
-
-interface RuleProp {
-  type: 'required' | 'email';
-  message: string;
-}
-
-type RulesProp = RuleProp[]
 
 const props = defineProps({
   rules: Array as PropType<RulesProp>,

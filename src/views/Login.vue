@@ -35,7 +35,6 @@ import ValidateForm from '../components/ValidateForm.vue'
 import { RulesProp } from '@/types/commonTypes'
 
 const emailVal = ref('')
-const router = useRouter()
 const emailRules: RulesProp = [
   {
     type: 'required',
@@ -53,9 +52,18 @@ const passwordRules: RulesProp = [
     message: '密码不能为空'
   }
 ]
+// route 用于获取路由信息
+// router 定义一系列行为
+const router = useRouter()
 const onFormSubmit = (result: boolean) => {
   if (result) {
     console.log('result', result)
+    // router.push({
+    //   name: 'column',
+    //   params: { id: 1 }
+    // })
+
+    router.push(`/column/${2}`)
   }
 }
 </script>
