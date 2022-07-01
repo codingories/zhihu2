@@ -4,8 +4,24 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import ColumnDetail from '@/components/ColumnDetail.vue'
+import { createStore } from 'vuex'
 
 const routerHistory = createWebHistory()
+
+const store = createStore({
+  state: {
+    count: 0
+  },
+  mutations: {
+    add (state) {
+      state.count++
+    }
+  }
+})
+
+console.log('store', store.state.count)
+store.commit('add')
+console.log('store222', store.state.count)
 
 const router = createRouter({
   history: routerHistory,
