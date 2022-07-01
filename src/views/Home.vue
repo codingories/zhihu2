@@ -24,9 +24,11 @@
 
 <script lang="ts" setup>
 import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
-import { testData } from '@/testData'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '@/store'
 
-const list: ColumnProps[] = testData
+const store = useStore<GlobalDataProps>()
+const list: ColumnProps[] = store.state.columns
 </script>
 
 <script lang="ts">

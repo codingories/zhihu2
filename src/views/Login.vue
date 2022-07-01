@@ -33,6 +33,9 @@ import { useRouter } from 'vue-router'
 import ValidateInput from '../components/ValidateInput.vue'
 import ValidateForm from '../components/ValidateForm.vue'
 import { RulesProp } from '@/types/commonTypes'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '@/store'
+const store = useStore<GlobalDataProps>()
 
 const emailVal = ref('')
 const emailRules: RulesProp = [
@@ -57,13 +60,8 @@ const passwordRules: RulesProp = [
 const router = useRouter()
 const onFormSubmit = (result: boolean) => {
   if (result) {
-    console.log('result', result)
-    // router.push({
-    //   name: 'column',
-    //   params: { id: 1 }
-    // })
-
-    router.push(`/column/${2}`)
+    router.push('/')
+    store.commit('login')
   }
 }
 </script>

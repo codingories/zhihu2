@@ -17,20 +17,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
 
 import ValidateForm from '@/components/ValidateForm.vue'
+import store from '@/store'
 
 const inputRef = ref<never>()
 
-const currentUser: UserProps = {
-  isLogin: true,
-  name: 'Ories',
-  id: 1
-}
+const currentUser: UserProps = computed(() => store.state.user)
 
 const emailRules: RulesProp = [
   {
