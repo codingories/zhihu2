@@ -23,8 +23,8 @@ import { GlobalDataProps } from '@/store'
 const store = useStore<GlobalDataProps>()
 const route = useRoute()
 const currentId = +route.params.id
-const column = store.state.columns.find(c => c.id === currentId)
-const list = store.state.posts.filter(post => post.columnId === currentId)
+const column = store.getters.getColumnById(currentId)
+const list = store.getters.getPostsByCid(currentId)
 
 </script>
 

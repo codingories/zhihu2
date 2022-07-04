@@ -11,7 +11,11 @@ export interface GlobalDataProps {
 
 const store = createStore<GlobalDataProps>({
   state: {
-    user: { isLogin: false },
+    user: {
+      isLogin: true,
+      name: 'Ories',
+      columnId: 1
+    },
     columns: testData,
     posts: testPosts
   },
@@ -22,6 +26,20 @@ const store = createStore<GlobalDataProps>({
         isLogin: true,
         name: 'Ories'
       }
+    },
+    createPost (state, newPost) {
+      state.posts.push(newPost)
+    }
+  },
+  getters: {
+    biggerColumnsLen (state) {
+      return state.columns.filter(c => c.id > 2).length
+    },
+    getColumnById: (state) => (id: number) => {
+      return state.columns.find(c => c.id === id)
+    },
+    getPostsByCid: (state) => (cid: number) => {
+      return state.posts.filter(post => post.columnId === cid)
     }
   }
 })
