@@ -48,7 +48,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .card-body img {
-  width: 50px;
+  width: 52px;
   height: 50px;
 }
 </style>
