@@ -4,3 +4,15 @@ interface RuleProp {
 }
 
 export type RulesProp = RuleProp[];
+
+interface ImageProps {
+  _id?: string;
+  url?: string;
+}
+
+export interface ColumnProps {
+  _id: number,
+  title: string,
+  avatar?: ImageProps,
+  description: string,
+}

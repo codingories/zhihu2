@@ -8,9 +8,9 @@ import axios from 'axios'
 //   console.log(res.data)
 // })
 // http://api.vikingship.xyz/api/columns?currentPage=1&pageSize=5
-axios.get('/v1/columns?currentPage=1&pageSize=5').then(res => {
-  console.log(res.data)
-})
+// axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
+//   console.log(res.data)
+// })
 
 const app = createApp(App)
 

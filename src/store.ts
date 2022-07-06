@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 import { PostProps, testData, testPosts } from '@/testData'
 import { UserProps } from '@/components/GlobalHeader.vue'
-import { ColumnProps } from '@/components/ColumnList.vue'
+import axios from 'axios'
+import { ColumnProps } from '@/types/commonTypes'
 
 export interface GlobalDataProps {
   user: UserProps,
@@ -29,15 +30,25 @@ const store = createStore<GlobalDataProps>({
     },
     createPost (state, newPost) {
       state.posts.push(newPost)
+    },
+    fetchColumns (state, rawData) {
+      state.columns = rawData.data.list
+    }
+  },
+  actions: {
+    fetchColumns (context) {
+      axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
+        context.commit('fetchColumns', res.data)
+      })
     }
   },
   getters: {
-    biggerColumnsLen (state) {
-      return state.columns.filter(c => c.id > 2).length
-    },
-    getColumnById: (state) => (id: number) => {
-      return state.columns.find(c => c.id === id)
-    },
+    // biggerColumnsLen (state) {
+    //   return state.columns.filter(c => c.id > 2).length
+    // },
+    // getColumnById: (state) => (id: number) => {
+    //   return state.columns.find(c => c.id === id)
+    // },
     getPostsByCid: (state) => (cid: number) => {
       return state.posts.filter(post => post.columnId === cid)
     }
