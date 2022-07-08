@@ -36,7 +36,6 @@ export const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('to.meta', to.meta)
   const { isLogin } = store.state.user
   if (to.meta.requiredLogin && !isLogin) {
     next({ name: 'login' })

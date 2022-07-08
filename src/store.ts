@@ -1,8 +1,7 @@
 import { createStore } from 'vuex'
-import { PostProps, testData, testPosts } from '@/testData'
 import { UserProps } from '@/components/GlobalHeader.vue'
 import axios from 'axios'
-import { ColumnProps } from '@/types/commonTypes'
+import { ColumnProps, PostProps } from '@/types/commonTypes'
 
 export interface GlobalDataProps {
   user: UserProps,
@@ -17,8 +16,8 @@ const store = createStore<GlobalDataProps>({
       name: 'Ories',
       columnId: 1
     },
-    columns: testData,
-    posts: testPosts
+    columns: [],
+    posts: []
   },
   mutations: {
     login (state) {
@@ -33,6 +32,12 @@ const store = createStore<GlobalDataProps>({
     },
     fetchColumns (state, rawData) {
       state.columns = rawData.data.list
+    },
+    fetchColumn (state, rawData) {
+      state.columns = [rawData.data]
+    },
+    fetchPosts (state, rawData) {
+      state.posts = rawData.data.list
     }
   },
   actions: {
@@ -40,17 +45,24 @@ const store = createStore<GlobalDataProps>({
       axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
         context.commit('fetchColumns', res.data)
       })
+    },
+    fetchColumn ({ commit }, cid) {
+      axios.get(`/api/columns/${cid}`).then(res => {
+        commit('fetchColumn', res.data)
+      })
+    },
+    fetchPosts ({ commit }, cid) {
+      axios.get(`/api/columns/${cid}/posts?currentPage=${1}&pageSize=${5}`).then(res => {
+        commit('fetchPosts', res.data)
+      })
     }
   },
   getters: {
-    // biggerColumnsLen (state) {
-    //   return state.columns.filter(c => c.id > 2).length
-    // },
-    // getColumnById: (state) => (id: number) => {
-    //   return state.columns.find(c => c.id === id)
-    // },
-    getPostsByCid: (state) => (cid: number) => {
-      return state.posts.filter(post => post.columnId === cid)
+    getColumnById: (state) => (id: string) => {
+      return state.columns.find(c => c._id === id)
+    },
+    getPostsByCid: (state) => (cid: string) => {
+      return state.posts.filter(post => post.column === cid)
     }
   }
 })

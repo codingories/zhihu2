@@ -11,8 +11,18 @@ interface ImageProps {
 }
 
 export interface ColumnProps {
-  _id: number,
+  _id: string,
   title: string,
   avatar?: ImageProps,
   description: string,
+}
+
+export interface PostProps {
+  _id: string;
+  title: string;
+  content: string;
+  image?: ImageProps;
+  createdAt: string;
+  column: string;
+  excerpt?: string;
 }
