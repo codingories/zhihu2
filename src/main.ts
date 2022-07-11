@@ -4,13 +4,16 @@ import { router } from '@/router'
 import store from '@/store'
 import axios from 'axios'
 
-// axios.get('http://api.vikingship.xyz/api/columns?currentPage=1&pageSize=5').then(res => {
-//   console.log(res.data)
+// async function hello () {
+//   const greetings = await Promise.resolve('hello')
+//   return greetings
+// }
+//
+// hello().then(value => {
+//   console.log('value2', value)
 // })
-// http://api.vikingship.xyz/api/columns?currentPage=1&pageSize=5
-// axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
-//   console.log(res.data)
-// })
+
+// console.log(hello())
 
 const app = createApp(App)
 

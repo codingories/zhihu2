@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { Commit, createStore } from 'vuex'
 import { UserProps } from '@/components/GlobalHeader.vue'
 import axios from 'axios'
 import { ColumnProps, PostProps } from '@/types/commonTypes'
@@ -7,6 +7,11 @@ export interface GlobalDataProps {
   user: UserProps,
   columns: ColumnProps[],
   posts: PostProps[]
+}
+
+const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
+  const { data } = await axios.get(url)
+  commit(mutationName, data)
 }
 
 const store = createStore<GlobalDataProps>({
@@ -41,20 +46,14 @@ const store = createStore<GlobalDataProps>({
     }
   },
   actions: {
-    fetchColumns (context) {
-      axios.get('/api/columns?currentPage=1&pageSize=5').then(res => {
-        context.commit('fetchColumns', res.data)
-      })
+    fetchColumns ({ commit }) {
+      getAndCommit('/api/columns?currentPage=1&pageSize=5', 'fetchColumns', commit)
     },
     fetchColumn ({ commit }, cid) {
-      axios.get(`/api/columns/${cid}`).then(res => {
-        commit('fetchColumn', res.data)
-      })
+      getAndCommit(`/api/columns/${cid}`, 'fetchColumn', commit)
     },
     fetchPosts ({ commit }, cid) {
-      axios.get(`/api/columns/${cid}/posts?currentPage=${1}&pageSize=${5}`).then(res => {
-        commit('fetchPosts', res.data)
-      })
+      getAndCommit(`/api/columns/${cid}/posts?currentPage=${1}&pageSize=${5}`, 'fetchPosts', commit)
     }
   },
   getters: {
