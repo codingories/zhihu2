@@ -4,6 +4,7 @@ import axios from 'axios'
 import { ColumnProps, PostProps } from '@/types/commonTypes'
 
 export interface GlobalDataProps {
+  loading: boolean,
   user: UserProps,
   columns: ColumnProps[],
   posts: PostProps[]
@@ -16,6 +17,7 @@ const getAndCommit = async (url: string, mutationName: string, commit: Commit) =
 
 const store = createStore<GlobalDataProps>({
   state: {
+    loading: false,
     user: {
       isLogin: true,
       name: 'Ories',
@@ -43,6 +45,9 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts (state, rawData) {
       state.posts = rawData.data.list
+    },
+    setLoading (state, status) {
+      state.loading = status
     }
   },
   actions: {

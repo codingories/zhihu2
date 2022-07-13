@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container">
     <global-header :user="currentUser"></global-header>
+    <h1 v-if="isLoading">正在读取</h1>
     <router-view></router-view>
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -20,40 +21,11 @@
 import { computed, ref } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
-import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
 
-import ValidateForm from '@/components/ValidateForm.vue'
 import store from '@/store'
 
-const inputRef = ref<never>()
-
 const currentUser: UserProps = computed(() => store.state.user)
-
-const emailRules: RulesProp = [
-  {
-    type: 'required',
-    message: '电子邮箱不能为空'
-  },
-  {
-    type: 'email',
-    message: '请输入正确的电子邮箱格式'
-  }
-]
-
-const passwordRules: RulesProp = [
-  {
-    type: 'required',
-    message: '密码不能为空'
-  }
-]
-
-const emailVal = ref('')
-const passwordVal = ref('')
-
-const onFormSubmit = (result: boolean) => {
-  console.log(result)
-}
-
+const isLoading = computed(() => store.state.loading)
 </script>
 
 <style>
