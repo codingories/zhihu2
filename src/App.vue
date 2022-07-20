@@ -2,7 +2,7 @@
   <div id="app" class="container">
     <global-header :user="currentUser"></global-header>
     <!--    <h1 v-if="isLoading">正在读取</h1>-->
-    <my-loading text="拼命加载中" :background="'rgba(0,0,0,0.8)'"></my-loading>
+    <my-loader text="拼命加载中" :background="'rgba(0,0,0,0.8)'" v-if="isLoading"></my-loader>
     <router-view></router-view>
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>
@@ -24,7 +24,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 
 import store from '@/store'
-import MyLoading from '@/components/myLoading.vue'
+import MyLoader from '@/components/myLoader.vue'
 
 const currentUser: UserProps = computed(() => store.state.user)
 const isLoading = computed(() => store.state.loading)
