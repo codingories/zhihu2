@@ -9,9 +9,7 @@ axios.interceptors.request.use(function (config) {
   return config
 })
 axios.interceptors.response.use(function (response) {
-  setTimeout(() => {
-    store.commit('setLoading', false)
-  }, 2000)
+  store.commit('setLoading', false)
   return response
 })
 

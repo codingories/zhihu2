@@ -35,6 +35,7 @@ import ValidateForm from '../components/ValidateForm.vue'
 import { RulesProp } from '@/types/commonTypes'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '@/store'
+
 const store = useStore<GlobalDataProps>()
 
 const emailVal = ref('')
@@ -60,8 +61,16 @@ const passwordRules: RulesProp = [
 const router = useRouter()
 const onFormSubmit = (result: boolean) => {
   if (result) {
-    router.push('/')
-    store.commit('login')
+    const payload = {
+      email: emailVal.value,
+      password: passwordVal.value
+    }
+    store.dispatch('login', payload).then(
+      data => {
+        console.log('data', data)
+        router.push('/')
+      }
+    )
   }
 }
 </script>

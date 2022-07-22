@@ -7,19 +7,26 @@ export interface GlobalDataProps {
   loading: boolean,
   user: UserProps,
   columns: ColumnProps[],
-  posts: PostProps[]
+  posts: PostProps[],
+  token: string
 }
 
 const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
   const { data } = await axios.get(url)
   commit(mutationName, data)
 }
+const postAndCommit = async (url: string, mutationName: string, commit: Commit, payload: any) => {
+  const { data } = await axios.post(url, payload)
+  commit(mutationName, data)
+  return data
+}
 
 const store = createStore<GlobalDataProps>({
   state: {
+    token: '',
     loading: false,
     user: {
-      isLogin: true,
+      isLogin: false,
       name: 'Ories',
       columnId: 1
     },
@@ -27,13 +34,13 @@ const store = createStore<GlobalDataProps>({
     posts: []
   },
   mutations: {
-    login (state) {
-      state.user = {
-        ...state.user,
-        isLogin: true,
-        name: 'Ories'
-      }
-    },
+    // login (state) {
+    //   state.user = {
+    //     ...state.user,
+    //     isLogin: true,
+    //     name: 'Ories'
+    //   }
+    // },
     createPost (state, newPost) {
       state.posts.push(newPost)
     },
@@ -48,6 +55,9 @@ const store = createStore<GlobalDataProps>({
     },
     setLoading (state, status) {
       state.loading = status
+    },
+    login (state, rawData) {
+      state.token = rawData.data.token
     }
   },
   actions: {
@@ -59,6 +69,9 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts ({ commit }, cid) {
       getAndCommit(`/api/columns/${cid}/posts?currentPage=${1}&pageSize=${5}`, 'fetchPosts', commit)
+    },
+    login ({ commit }, payload) {
+      return postAndCommit('/api/user/login', 'login', commit, payload)
     }
   },
   getters: {
