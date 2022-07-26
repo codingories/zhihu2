@@ -65,9 +65,16 @@ const onFormSubmit = (result: boolean) => {
       email: emailVal.value,
       password: passwordVal.value
     }
-    store.dispatch('login', payload).then(
+    // store.dispatch('login', payload).then(
+    //   data => {
+    //     console.log('data fuck', data)
+    //     store.dispatch('fetchCurrentUser')
+    //     router.push('/')
+    //   }
+    // )
+    store.dispatch('loginAndFetch', payload).then(
       data => {
-        console.log('data', data)
+        console.log('data fuck', data)
         router.push('/')
       }
     )

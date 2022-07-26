@@ -3,6 +3,8 @@ import { UserProps } from '@/components/GlobalHeader.vue'
 import axios from 'axios'
 import { ColumnProps, PostProps } from '@/types/commonTypes'
 
+axios.defaults.baseURL = '/api'
+
 export interface GlobalDataProps {
   loading: boolean,
   user: UserProps,
@@ -26,9 +28,7 @@ const store = createStore<GlobalDataProps>({
     token: '',
     loading: false,
     user: {
-      isLogin: false,
-      name: 'Ories',
-      columnId: 1
+      isLogin: false
     },
     columns: [],
     posts: []
@@ -57,21 +57,34 @@ const store = createStore<GlobalDataProps>({
       state.loading = status
     },
     login (state, rawData) {
-      state.token = rawData.data.token
+      const { token } = rawData.data
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+      state.token = token
+    },
+    fetchCurrentUser (state, rawData) {
+      state.user = { isLogin: true, ...rawData.data }
     }
   },
   actions: {
     fetchColumns ({ commit }) {
-      getAndCommit('/api/columns?currentPage=1&pageSize=5', 'fetchColumns', commit)
+      getAndCommit('/columns?currentPage=1&pageSize=5', 'fetchColumns', commit)
     },
     fetchColumn ({ commit }, cid) {
-      getAndCommit(`/api/columns/${cid}`, 'fetchColumn', commit)
+      getAndCommit(`/columns/${cid}`, 'fetchColumn', commit)
     },
     fetchPosts ({ commit }, cid) {
-      getAndCommit(`/api/columns/${cid}/posts?currentPage=${1}&pageSize=${5}`, 'fetchPosts', commit)
+      getAndCommit(`/columns/${cid}/posts?currentPage=${1}&pageSize=${5}`, 'fetchPosts', commit)
     },
     login ({ commit }, payload) {
-      return postAndCommit('/api/user/login', 'login', commit, payload)
+      return postAndCommit('/user/login', 'login', commit, payload)
+    },
+    fetchCurrentUser ({ commit }) {
+      getAndCommit('/user/current', 'fetchCurrentUser', commit)
+    },
+    loginAndFetch ({ dispatch }, loginData) {
+      return dispatch('login', loginData).then(() => {
+        return dispatch('fetchCurrentUser')
+      })
     }
   },
   getters: {
