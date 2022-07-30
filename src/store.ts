@@ -25,7 +25,7 @@ const postAndCommit = async (url: string, mutationName: string, commit: Commit, 
 
 const store = createStore<GlobalDataProps>({
   state: {
-    token: '',
+    token: localStorage.getItem('token') || '',
     loading: false,
     user: {
       isLogin: false
@@ -58,8 +58,9 @@ const store = createStore<GlobalDataProps>({
     },
     login (state, rawData) {
       const { token } = rawData.data
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`
       state.token = token
+      localStorage.setItem('token', token)
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
     },
     fetchCurrentUser (state, rawData) {
       state.user = { isLogin: true, ...rawData.data }

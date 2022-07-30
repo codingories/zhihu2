@@ -19,15 +19,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
+import GlobalHeader from '@/components/GlobalHeader.vue'
 
 import store from '@/store'
 import MyLoader from '@/components/myLoader.vue'
+import axios from 'axios'
 
-const currentUser: UserProps = computed(() => store.state.user)
+const currentUser = computed(() => store.state.user)
 const isLoading = computed(() => store.state.loading)
+const token = computed(() => store.state.token)
+
+onMounted(() => {
+  if (!currentUser.value.isLogin && token.value) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token.value}`
+    store.dispatch('fetchCurrentUser')
+  }
+})
 </script>
 
 <style>
